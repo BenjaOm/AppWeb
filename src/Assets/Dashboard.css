@@ -1,0 +1,67 @@
+/* Dashboard.css */
+
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    transition: padding-left 0.3s ease;
+    padding-left: 0; /* No padding cuando el sidebar está cerrado */
+  }
+
+  .dashboard.sidebar-open {
+    padding-left: 250px; /* Añade el padding para compensar el ancho del sidebar */
+  }
+  
+  .sidebar-closed .dashboard {
+    padding-left: 0; /* Sin padding cuando el sidebar está cerrado */
+  }
+  
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajuste automático de columnas */
+    gap: 20px;
+    width: 100%; /* Ajustar al contenedor */
+    transition: all 0.3s ease; /* Para animar los cambios de tamaño */
+  }
+  
+  .chart-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .chart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .chart-card h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+  }
+  
+  .chart-container {
+    height: auto;
+    width: 100%;
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    top: 50px;
+    left: 20px;
+    background-color: #333; /* Color de fondo del botón */
+    color: #fff; /* Color del texto del botón */
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999; /* Asegura que el botón esté en la parte superior de otros elementos */
+  }
+  
+  /* Estilos para el ícono de toggle (puedes usar una fuente de íconos o una imagen) */
+  .sidebar-toggle i {
+    font-size: 20px;
+  }

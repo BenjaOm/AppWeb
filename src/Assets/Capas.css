@@ -1,0 +1,149 @@
+/* modal-capas.css */
+
+/* Contenedor del modal */
+.modal-capas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    z-index: 1000; /* Asegura que el modal esté por encima de otros elementos */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    padding: 20px; /* Añade padding para evitar que el contenido toque los bordes */
+
+  }
+  
+  /* Contenido del modal */
+  .modal-capas-content {
+    background: #f8f8f8; /* Cambia el color de fondo por un gris claro */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); /* Sombra más definida */
+    padding: 30px; /* Añade más padding */
+    text-align: center;
+    max-width: 500px; /* Establece un ancho máximo */
+    opacity: 0;
+    transform: translateY(-50px);
+    transition: opacity 0.3s, transform 0.3s;
+    width: 90%; /* Aumenta el ancho */
+    background: linear-gradient(to bottom right, #ffffff, #f0f0f0); /* Degradado suave */
+
+
+  }
+  
+  /* Título del modal */
+  .modal-capas h2 {
+    text-align: left; /* Alinea el texto a la izquierda */
+    color: #333; /* Color oscuro para el texto */
+    font-weight: 600; /* Fuente en negrita */
+    margin-bottom: 30px; /* Más espacio debajo del título */
+}
+  
+  /* Lista de capas */
+  .modal-capas ul {
+    text-align: left; /* Alinea el texto de los elementos de la lista a la izquierda */
+    padding-left: 0; /* Elimina el padding izquierdo */
+}
+
+  
+  /* Elementos de la lista */
+  .modal-capas ul li {
+    display: flex;
+    align-items: center; /* Centra los elementos verticalmente */
+    margin-bottom: 15px; /* Espacio entre elementos de la lista */
+}
+
+  
+  /* Botón de cierre del modal */
+  .modal-capas button {
+    background-color: #004225; /* Color de fondo del botón verde oscuro */
+    color: #fff; /* Color del texto del botón */
+    border: none;
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Estilo de botón al pasar el mouse */
+  .modal-capas button:hover {
+    background-color: #0056b3; /* Color de fondo del botón al pasar el mouse */
+  }
+  
+  /* Mostrar el modal cuando esté visible */
+/* Mostrar el modal cuando esté visible */
+.modal-capas.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  /* Animación de entrada del contenido del modal */
+  .modal-capas-content.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+
+
+  /* Capas.css */
+
+/* Resto de estilos del modal... */
+
+.checklist-container {
+    margin: 20px 0;
+  }
+  
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    text-align: left; /* Alinear texto a la izquierda */
+  }
+  
+  
+  .checkbox-item input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #48a868; /* Borde en tono verde */
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+    outline: none; /* Eliminar el contorno al hacer foco */
+    transition: all 0.3s ease; /* Transición suave para cambios de estado */
+  }
+  
+  .checkbox-item input[type="checkbox"]:checked:after {
+    content: '✓'; /* Puedes cambiarlo por un ícono si prefieres */
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+  }
+  
+  .checkbox-item input[type="checkbox"]:checked {
+    background-color: #48a868; /* Fondo en tono verde */
+    border-color: #357a54; /* Borde en tono verde más oscuro */
+  }
+  
+
+  .checkbox-item label {
+    margin-left: 10px; /* Espacio entre el checkbox y el texto */
+    cursor: pointer;
+    font-weight: 400;
+    color: #333;
+  }
+  /* Botón de cierre estilizado */
+  .modal-capas button {
+    margin-top: 20px;
+    background-color: #48a868; /* Color de fondo del botón */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave para el botón */
+  }

@@ -1,0 +1,53 @@
+.sidebar {
+    position: fixed;
+    left: -350px; /* Escondido por defecto */
+    top: 60px; /* Ajusta al tamaño de tu barra de navegación */
+    width: 250px;
+    height: calc(100% - 50px); /* Altura ajustada al tamaño de tu barra de navegación */
+    background-color: #333;
+    transition: left 0.5s ease;
+    z-index: 1; /* Asegúrate de que este valor es menor que el z-index de tu barra de navegación */
+  }
+  
+  .sidebar.open {
+    left: 0; /* Se mueve a la vista cuando está abierto */
+  }
+  
+  .sidebar-item {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidebar-item:hover {
+    color: #f1f1f1;
+  }
+  
+  .close2-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .open-btn {
+    font-size: 30px;
+    cursor: pointer;
+    border: none;
+    margin: 10px 0;
+    position: absolute;
+    top: 50px; /* Ajustar según sea necesario */
+    left: 10px;
+  }
+  
+  .open-btn:focus {
+    outline: none;
+  }
+  

@@ -1,0 +1,34 @@
+
+
+.container {
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .denunciasTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .denunciasTable th,
+  .denunciasTable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .denunciasTable th {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  .denunciasTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .denunciasTable tr:hover {
+    background-color: #ddd;
+  }
+  

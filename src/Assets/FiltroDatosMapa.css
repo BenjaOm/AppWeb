@@ -1,0 +1,282 @@
+/* FiltroDatosMapa.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal {
+  background: #ffffff; /* Fondo blanco para el modal */
+  padding: 30px; /* Espaciado interior más grande */
+  border-radius: 10px; /* Bordes más redondeados */
+  width: 85%; /* Ajuste para un ancho relativo */
+  height: 85%; /* Ajuste para un ancho relativo */
+  overflow: hidden; /* Evita el desbordamiento de contenido fuera del modal */
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  border: 1px solid #e3e3e3; /* Borde sutil */
+  min-width: 820px; /* Asegura un ancho mínimo para dispositivos más pequeños */
+  max-width: 1200px; /* Ajuste para un ancho máximo */
+  max-height: 85%; /* Ajuste para un ancho máximo */
+
+  display: flex;
+  flex-direction: column; /* Organiza el contenido en columnas */
+  justify-content: space-between; /* Asegúrate de que el contenido esté espaciado uniformemente */
+
+}
+
+
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Cambia a "flex-end" para alinear los botones al extremo derecho */
+  gap: 10px; /* Espacio entre los botones */
+  padding-top: 20px;
+  flex-shrink: 0; /* Evita que el encabezado y pie se reduzcan al hacer scroll */
+
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative; /* Agrega esta línea */
+  
+}
+
+.modal-table-container {
+  /* Esta es la clase para el contenedor de la tabla */
+  flex-grow: 1;
+  overflow-y: auto; /* Habilita el scroll en la tabla */
+}
+
+.modal-table-container table {
+  border-collapse: collapse; /* Combina los bordes de las celdas */
+  width: 100%;
+}
+.modal-table-container th,
+.modal-table-container td {
+  border: 6px solid #000; /* Grosor de las líneas de las celdas */
+  padding: 10px; /* Espaciado interior */
+  text-align: center; /* Alinea el texto en el centro de las celdas */
+}
+
+
+.close-btn {
+  /* Estilos existentes */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  color: #7a7a7a; /* O el color que prefieras */
+  padding: 0; /* Elimina el relleno si es necesario */
+  line-height: 1; /* Asegura que el botón no tenga altura extra */
+  transition: color 0.3s ease, box-shadow 0.3s ease; /* Suaviza la transición del color y la sombra */
+
+}
+.close-btn:hover {
+  color: #000; /* Cambia el color al pasar el ratón por encima para mejor visibilidad */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Añade una sombra para resaltar el botón */
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto; /* Añade desplazamiento si el contenido es demasiado largo */
+  flex-grow: 1; /* Permite que el cuerpo crezca para ocupar el espacio disponible */
+
+}
+
+.modal-body .filter-group {
+  display: grid;
+  grid-template-columns: 1fr 3fr; /* Proporción ajustada para labels y selects */
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-body .filter-group label {
+  text-align: right; /* Alinea el texto de los labels a la derecha */
+  padding-right: 10px; /* Espacio entre label y select */
+}
+
+.modal-body .filter-group select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.btn-secondary {
+  background-color: #f44336;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+.open-modal-btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  background-color: #4CAF50; /* O cualquier color que prefieras */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px; /* Ajusta esto según la posición de tu navbar */
+  left: 730px; /* Ajusta esto para no solapar otros elementos */
+  z-index: 5; /* Asegúrate de que el z-index sea lo suficientemente alto */
+}
+
+.open-modal-btn:hover {
+  background-color: #45a049; /* Un tono más oscuro para el efecto hover */
+}
+
+
+.filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.modal-body .filters-container {
+  display: flex;
+  flex-direction: column; /* Organiza los elementos en una columna vertical */
+  gap: 10px; /* Espacio entre elementos */
+}
+
+.modal-body .filter-group {
+  display: flex;
+  align-items: center; /* Centra los elementos verticalmente */
+}
+
+.modal-body .filter-group label {
+  font-weight: bold;
+  text-align: left;
+  flex: 1; /* Hace que el label ocupe todo el espacio disponible */
+  padding-right: 10px; /* Espacio entre label y select */
+}
+
+.modal-body .filter-group select {
+  flex: 2; /* Hace que el select ocupe más espacio que el label */
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+.filter-group select:focus {
+  border: 1px solid #4CAF50;
+  box-shadow: 0 4px 8px rgba(0, 128, 0, 0.2);
+}
+
+
+
+
+
+.average-table,
+.detenidos-table {
+  overflow-x: auto;
+  flex: 1;
+  margin-top: 20px; /* Espaciado entre filtros y tablas */
+  padding-top: 20px; /* Espaciado superior de las tablas */
+  position: relative; /* Importante para posicionar las tablas correctamente */
+}
+
+.average-table table,
+.detenidos-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  max-height: calc(100% - 40px); /* Resta el espacio de los filtros y el espaciado superior */
+  overflow-y: auto;
+}
+
+.average-table th,
+.average-table td,
+.detenidos-table th,
+.detenidos-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.average-table th,
+.detenidos-table th {
+  background-color: #f2f2f2;
+}
+
+
+/* Estilos existentes para .modal-overlay, .modal, etc. */
+
+/* Estilos para la tabla de 'Detenidos' */
+.detenidos-table {
+  overflow-x: visible;
+  overflow-y: visible;
+  margin-top: 20px;
+}
+
+.detenidos-table table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  max-height: none;
+
+}
+
+.detenidos-table th,
+.detenidos-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.detenidos-table th {
+  background-color: #f2f2f2;
+}
+
+/* Estilos para los sub-encabezados */
+.detenidos-table th[colspan] {
+  text-align: center;
+}
+
+.detenidos-table th[rowspan] {
+  text-align: center;
+  vertical-align: middle;
+}
