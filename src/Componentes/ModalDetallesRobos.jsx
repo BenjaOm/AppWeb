@@ -1,4 +1,3 @@
-// RobberyDetailsModal.js
 import React from 'react';
 import '../Assets/ModalDetalleRobos.css';
 
@@ -12,10 +11,12 @@ const RobberyDetailsModal = ({ isVisible, onClose, details }) => {
       <div className="robbery-details-modal-content">
         <h2>Detalles del Robo</h2>
         <ul>
-          {details.map((robbery) => (
-            <li key={robbery.id}>
-              <h3>{robbery.description}</h3>
-              <p>Fecha: {robbery.date}</p>
+          {details.map((robbery, index) => (
+            <li key={index}>
+              <h3>{robbery.descripcion}</h3>
+              <p>Fecha: {new Date(robbery.fecha).toLocaleDateString()}</p>
+              <p>Dirección: {robbery.direccion}</p>
+              <p>Información Adicional: {robbery.infoAdicional}</p>
             </li>
           ))}
         </ul>

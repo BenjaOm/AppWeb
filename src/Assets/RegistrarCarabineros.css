@@ -1,0 +1,63 @@
+/* Estilos para el card de registro */
+.Registro-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.Registro-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    width: 90%;
+    
+    max-width: 600px;
+    margin-top: 400px; /* Aumenta este valor para mover el card más abajo */
+}
+  /* Estilos para los campos del formulario de registro */
+  .Registro-input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .Registro-input:hover {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Estilos para el botón de registro */
+  .Registro-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  
+  .Registro-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Estilos para el enlace de inicio de sesión */
+  .Registro-Link {
+    text-decoration: none;
+    color: #007bff;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .Registro-Link:hover {
+    text-decoration: underline;
+  }
+  

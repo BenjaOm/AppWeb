@@ -10,6 +10,7 @@ import Navbar from '../Componentes/Navbar';
 import Login from '../Vistas/Login';
 import AdvancedSidebar from '../Componentes/SideBar';
 import Header from '../Componentes/Header';
+import RegistrarCarabinero from '../Vistas/RegistrarCarabinero';
 
 
 const Rutas = () => {
@@ -32,6 +33,8 @@ const Rutas = () => {
         <Route path="/historial-denuncias" element={<HistorialDenuncias />} />
         <Route path="/mapa" element={<Mapa />} />
         <Route path="/panel-control" element={<PanelControl />} />
+        <Route path="/registroCarabinero" element={<RegistrarCarabinero />} />
+
 
       </Routes>
     </Router>

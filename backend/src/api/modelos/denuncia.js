@@ -1,46 +1,19 @@
-// denuncia.js (o el nombre de tu archivo de modelo de Mongoose)
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const usuarioSchema = new Schema({
-  // Estructura del subdocumento usuario si es necesario
-  // ...
-});
-
-const ubicacionSchema = new Schema({
-  latitud: Number,
-  longitud: Number,
-  // ...
-});
-
-const tipoDelitoSchema = new Schema({
+const DenunciaSchema = new mongoose.Schema({
   nombre: String,
+  direccion: String,
   descripcion: String,
-  // ...
-});
-
-const denunciaSchema = new Schema({
-  IDDenucia: Number,
-  Fecha: Date,
-  usuario: usuarioSchema,
-  descripcion: String,
-  estado: String,
-  ubicacion: ubicacionSchema,
-  constatacionLesiones: {
-    estado: String,
-    descripcion: String,
-    // ...
+  tipoDelitoSeleccionado: String,
+  infoAdicional: String,
+  ubicacionActual: {
+    latitude: Number,
+    longitude: Number
   },
-  tipoDelito: tipoDelitoSchema,
-  documentosAdjuntos: [{
-    tipo: String,
-    nombreArchivo: String,
-    url: String,
-  }],
-  // Incluye otros campos según sea necesario
-}, { collection: 'Denuncias' });
+  fecha: Date
+}, { collection: 'denuncias' }); // Utiliza el nombre correcto de la colección "denuncias"
 
-const Denuncia = mongoose.model('Denuncia', denunciaSchema);
+const Denuncia = mongoose.model('Denuncia', DenunciaSchema);
 
 module.exports = Denuncia;

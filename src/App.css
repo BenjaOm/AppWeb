@@ -1,39 +1,77 @@
-/* Add this CSS to your project's stylesheet */
-
+/* Estilos para la barra de navegación */
 .navbar {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: darkgreen;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo {
+  padding: 14px 16px;
+  color: #00a300;
+  font-size: 24px;
+}
+
+.navbar ul {
+  display: flex;
+  list-style-type: none;
+}
+
+.navbar li {
+  margin: 0 10px;
+}
+
+.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar li a.active {
+  background-color: black;
+  border-radius: 10px;
+}
+
+.navbar li a:hover:not(.active) {
+  background-color: black;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+      flex-direction: column;
+      align-items: flex-start;
   }
-  
+
+  .navbar .logo {
+      margin-bottom: 10px;
+  }
+
+  .navbar ul {
+      flex-direction: column;
+  }
+
   .navbar li {
-    float: left;
+      margin: 5px 0;
   }
-  
-  .navbar li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  .navbar li a.active {
-    background-color: #555; /* Active link color */
-  }
-  
-  .navbar li a:hover:not(.active) {
-    background-color: #111;
-  }
+}
+.logo-icon {
+  height: 60px;
+  width: 60px;
+  background-size: cover;
+  margin-bottom: 10px;
+}
 
+.logo-icon.logo {
+  background-image: url('../src//Assets/logoappweb.png');
+}
 
-
-
-  /* Dashboard diseño*/
-
- 
 
 
 

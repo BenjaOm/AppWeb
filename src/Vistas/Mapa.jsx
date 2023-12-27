@@ -1,28 +1,79 @@
-// Mapa.js
-import React, { useState } from 'react';
-import { Map, GoogleApiWrapper, Marker, Polygon } from 'google-maps-react';
-import SideBarMapa from '../Componentes/SideBarMapa';
-import FiltroDatosMapa from '../Componentes/FiltroDatosMapa';
-import CapasDatos from '../Componentes/CapasDatos';
-import ModalDetallesRobos from '../Componentes/ModalDetallesRobos'
-const Mapa = (props) => {
-  const [activeLayer, setActiveLayer] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLayerModalVisible, setIsLayerModalVisible] = useState(false);
- 
-  const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
-  const [isCapasModalVisible, setIsCapasModalVisible] = useState(false);
+  // Mapa.js
+    import React, { useState, useEffect } from 'react';
+    import { Map, GoogleApiWrapper, Marker, Polygon } from 'google-maps-react';
+    import SideBarMapa from '../Componentes/SideBarMapa';
+    import FiltroDatosMapa from '../Componentes/FiltroDatosMapa';
+    import CapasDatos from '../Componentes/CapasDatos';
+    import ModalDetallesRobos from '../Componentes/ModalDetallesRobos'
+    import axios from 'axios'; // Importa axios para realizar solicitudes HTTP
+
+
+
+
+    const Mapa = (props) => {
+      const [activeLayer, setActiveLayer] = useState(null);
+      const [isModalVisible, setIsModalVisible] = useState(false);
+      const [isLayerModalVisible, setIsLayerModalVisible] = useState(false);
+
+      const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
+      const [isCapasModalVisible, setIsCapasModalVisible] = useState(false);
+
+      const [isSidebarOpen, setIsSidebarOpen1] = useState(false);
+
+      const [showRobberyPolygon, setShowRobberyPolygon] = useState(false);
+      const [selectedRobberyDetails, setSelectedRobberyDetails] = useState(null);
+      const [showDetailsModal, setShowDetailsModal] = useState(false);
+      const [robberyData, setRobberyData] = useState([]); // Estado para almacenar los datos de robos
+      const [showAllCrimes, setShowAllCrimes] = useState(false);
+      const [allCrimesData, setAllCrimesData] = useState([]);
+      
+
+      const [selectedDenunciaDetails, setSelectedDenunciaDetails] = useState(null);
+
+      // Estado para controlar la visibilidad del modal de detalles de denuncia
+      const [isDenunciaModalVisible, setIsDenunciaModalVisible] = useState(false);
+    
+    const style = {
+      width: '100%',
+      height: '100%'
+    };
+
+
   
-  const [isSidebarOpen, setIsSidebarOpen1] = useState(false);
+      // Función para obtener los datos de denuncias por robos desde el backend
+      const fetchDenunciasData = async () => {
+        try {
+          const response = await axios.get('http://localhost:3002/api/denuncias');
+          const filteredData = response.data.filter(d => d.ubicacionActual && typeof d.ubicacionActual.latitude === 'number' && typeof d.ubicacionActual.longitude === 'number');
+          setAllCrimesData(filteredData.map(d => ({ lat: d.ubicacionActual.latitude, lng: d.ubicacionActual.longitude })));
+        } catch (error) {
+          console.error('Error al obtener datos', error);
+        }
+      };
+      useEffect(() => {
+        if (showRobberyPolygon) {
+          fetchDenunciasData();
+        }
+      }, [showRobberyPolygon]);
+    
+      useEffect(() => {
+        if (showAllCrimes) {
+          fetchDenunciasData();
+        }
+      }, [showAllCrimes, selectedDenunciaDetails]);
+      
+      // Agrega este console.log para verificar los datos de denuncia
+      console.log("Datos de denuncia:", selectedDenunciaDetails);
+      
+    
 
-  const [showRobberyPolygon, setShowRobberyPolygon] = useState(false);
-  const [selectedRobberyDetails, setSelectedRobberyDetails] = useState(null);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
+    const handleToggleLayer = (layerName, isVisible) => {
+      if (layerName === "Todos los Delitos") {
+        setShowAllCrimes(isVisible);
+      }
+    }
 
-  const style = {
-    width: '100%',
-    height: '100%'
-  };
+
 
   const onPolygonClick = () => {
     // Simulamos la obtención de datos de robos
@@ -79,8 +130,15 @@ const Mapa = (props) => {
         key={index}
         position={coord}
         visible={activeLayer === null || activeLayer === data}
+        onClick={() => handleMarkerClick(data[index])} // Agregar evento onClick
       />
     ));
+  };
+
+  const handleMarkerClick = (denuncia) => {
+    // Aquí puedes mostrar el modal con los detalles de la denuncia
+    setSelectedDenunciaDetails(denuncia);
+    setIsModalVisible(true);
   };
 
   const toggleSidebarMapa = () => {
@@ -89,50 +147,54 @@ const Mapa = (props) => {
 
   return (
     <div className="map-container">
-      <div style={style}>
-        <Map
-          google={props.google}
-          style={style}
-          initialCenter={{ lat: -27.366576, lng: -70.331580 }}
-          bounds={bounds}
-          onReady={onMapReady}
-        >
-         <SideBarMapa isOpen={isSidebarOpen} onClose={toggleSidebarMapa} />
+    <div style={style}>
+      <Map
+        google={props.google}
+        style={style}
+        initialCenter={{ lat: -27.366576, lng: -70.331580 }}
+        bounds={bounds}
+        onReady={onMapReady}
+      >
+        {showAllCrimes && renderMarkers(allCrimesData)}
+        <SideBarMapa isOpen={isSidebarOpen} onClose={toggleSidebarMapa} />
+        <SideBarMapa onOpenModal={handleOpenFilterModal} onOpenModalCapas={handleOpenCapasModal} />
+        <FiltroDatosMapa isVisible={isFilterModalVisible} onClose={handleCloseModal} />
+        <CapasDatos isVisible={isCapasModalVisible} onClose={() => setIsCapasModalVisible(false)} onToggleLayer={handleToggleLayer} />
 
-           <SideBarMapa 
-              onOpenModal={handleOpenFilterModal} 
-              onOpenModalCapas={handleOpenCapasModal}
-            />
-            <FiltroDatosMapa
-              isVisible={isFilterModalVisible}
-              onClose={handleCloseModal}
-            />
-          <CapasDatos
-            isVisible={isCapasModalVisible}
-            onClose={() => setIsCapasModalVisible(false)}
-            onToggleRobbery={handleToggleRobbery}
+        <ModalDetallesRobos isVisible={showDetailsModal} onClose={() => setShowDetailsModal(false)} details={selectedRobberyDetails} />
+
+        {showRobberyPolygon && (
+          <Polygon
+            paths={robberyCoordinates}
+            strokeColor="#0000FF"
+            strokeOpacity={0.8}
+            strokeWeight={2}
+            fillColor="#0000FF"
+            fillOpacity={0.35}
+            onClick={onPolygonClick}
           />
+        )}
 
-
-
-          <ModalDetallesRobos
-            isVisible={showDetailsModal}
-            onClose={() => setShowDetailsModal(false)}
-            details={selectedRobberyDetails}
-          />
-
-          {showRobberyPolygon && (
-            <Polygon
-              paths={robberyCoordinates}
-              strokeColor="#0000FF"
-              strokeOpacity={0.8}
-              strokeWeight={2}
-              fillColor="#0000FF"
-              fillOpacity={0.35}
-              onClick={onPolygonClick}
-
-            />
-          )}
+         {/* Modal para mostrar detalles de denuncia */}
+        {/* Modal para mostrar detalles de denuncia */}
+        {isModalVisible && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <button className="close-button" onClick={() => setIsModalVisible(false)}>
+        X
+      </button>
+      <h2>Detalles de Denuncia</h2>
+      {selectedDenunciaDetails && ( // Verifica si se han seleccionado detalles de denuncia
+        <div>
+          <p><strong>Descripción:</strong> {selectedDenunciaDetails.descripcion}</p>
+          <p><strong>Fecha:</strong> {selectedDenunciaDetails.fecha}</p>
+          <p><strong>Otro Campo:</strong> {selectedDenunciaDetails.otroCampo}</p>
+          {/* Agrega otros campos de detalles aquí */}
+        </div>
+      )}
+    </div>
+  </div>
+)}
         </Map>
       </div>
     </div>

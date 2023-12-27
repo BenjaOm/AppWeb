@@ -6,6 +6,8 @@ import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'; // Import the l
 const Navbar = () => {
   return (
     <ul className="navbar">
+          <span className="logo-icon logo"></span>
+
 
 
       <li>

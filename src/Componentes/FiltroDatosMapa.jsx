@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Assets/FiltroDatosMapa.css';
+import axios from 'axios'; // Asegúrate de importar Axios al principio de tu archivo
 
 const FiltroDatosMapa = ({ isVisible, onClose, onFilter }) => {
 
   const [mostrarResultados, setMostrarResultados] = useState(false);
-  const [resultados, setResultados] = useState([]);
   const [mostrarTablaPromedio, setMostrarTablaPromedio] = useState(false);
   const [mostrarTablaDetenidos, setMostrarTablaDetenidos] = useState(false);
   const [mostrarTablaDetenciones, setMostrarTablaDetenciones] = useState(false);
@@ -14,6 +14,75 @@ const FiltroDatosMapa = ({ isVisible, onClose, onFilter }) => {
   const [tablaActual, setTablaActual] = useState("Promedio");
   const [haSidoConsultado, setHaSidoConsultado] = useState(false);
 
+  const [datosCasos, setDatosCasos] = useState([]);
+
+  const [resultados, setResultados] = useState([]);
+  const [filtroSemana, setFiltroSemana] = useState(''); // Estado para el filtro de semana
+
+  const [ultimasSemanasDiciembre, setUltimasSemanasDiciembre] = useState([]);
+
+
+  const obtenerUltimasSemanasDiciembre = () => {
+    const fechaActual = new Date();
+    const ultimoDiaDiciembre = new Date(fechaActual.getFullYear(), 11, 31);
+    const semanasDiciembre = [];
+
+    for (let i = 2; i >= 0; i--) {
+      const fechaInicioSemana = new Date(ultimoDiaDiciembre);
+      fechaInicioSemana.setDate(ultimoDiaDiciembre.getDate() - i * 7);
+      const semana = `Semana ${i + 1} - ${fechaInicioSemana.getDate()} de diciembre`;
+      semanasDiciembre.push(semana);
+    }
+
+    setUltimasSemanasDiciembre(semanasDiciembre);
+  };
+
+
+  useEffect(() => {
+    obtenerUltimasSemanasDiciembre();
+  }, []);
+
+  const obtenerConteoAnual = async (año) => {
+    try {
+      const response = await axios.get(`http://localhost:3002/api/denuncias/conteo-anual/${año}`);
+      return response.data.conteo;
+    } catch (error) {
+      console.error('Error al obtener el conteo anual de denuncias:', error);
+      return 0;
+    }
+  };
+
+  const actualizarDatosCasos = async () => {
+    // Obtener el total de denuncias para el año 2023
+    const conteo2023 = await obtenerConteoAnual(2023);
+
+    // Crear un objeto de datos solo para el año 2023 sin fecha ni año
+    const datos2023 = { categoria: 'Denuncias', '2023': conteo2023 };
+
+    if (filtroSemana) {
+      const responseSemana = await axios.get(`http://localhost:3002/api/denuncias/semana-actual/${encodeURIComponent(filtroSemana)}`);
+      datos2023['conteo_semana'] = responseSemana.data.conteo;
+    }
+
+    // Actualizar los datos
+    setDatosCasos([datos2023]);
+  };
+  useEffect(() => {
+    actualizarDatosCasos();
+  }, [filtroSemana]);
+
+useEffect(() => {
+    obtenerConteoAnual(2023).then(conteo2023 => {
+        setDatosCasos([{ categoria: 'Denuncias', '2023': conteo2023 }]);
+    });
+}, []); // Se ejecuta solo una vez al montar el componente
+
+
+
+
+
+
+  
   const manejarClicOverlay = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -24,16 +93,6 @@ const FiltroDatosMapa = ({ isVisible, onClose, onFilter }) => {
     return null;
   }
 
-  const datosFalsos = [
-    { delitos: 10, detenciones: 5, detenidos: 3, promedio: '2.0' },
-    // ... más datos
-  ];
-
-  const manejarFiltro = () => {
-    // Aquí se debería implementar la lógica para obtener los datos reales
-    setResultados(datosFalsos);
-    setMostrarResultados(true);
-  };
 
   const manejarLimpiar = () => {
     setResultados([]);
@@ -111,23 +170,26 @@ const FiltroDatosMapa = ({ isVisible, onClose, onFilter }) => {
 
   return (
     <div className="modal-overlay" onClick={manejarClicOverlay}>
-      <div className="modal">
-        <div className="modal-header">
-          <h2>Datos</h2>
-          <button className="close-btn" onClick={onClose}>
-            <i className="material-icons">close</i>
-          </button>
-        </div>
-        <div className="modal-body">
-          <div className="filters-container">
-            <div className="filter-group" key="semana">
-              <label htmlFor="semana">Semana:</label>
-              <select id="semana">
-                <option value="">Selecciona una opción</option>
-                <option value="opcion1">Opción 1 Semana</option>
-                <option value="opcion2">Opción 2 Semana</option>
-                <option value="opcion3">Opción 3 Semana</option>
-              </select>
+    <div className="modal">
+      <div className="modal-header">
+        <h2>Datos</h2>
+        <button className="close-btn" onClick={onClose}>
+          <i className="material-icons">close</i>
+        </button>
+      </div>
+      <div className="modal-body">
+      <div className="filters-container">
+          <div className="filter-group" key="semana">
+            <label htmlFor="semana">Semana:</label>
+            <select
+            value={filtroSemana}
+            onChange={(e) => setFiltroSemana(e.target.value)}
+          >
+            <option value="">Selecciona una semana</option>
+            {ultimasSemanasDiciembre.map((semana, index) => (
+              <option key={index} value={semana}>{semana}</option>
+            ))}
+          </select>
             </div>
             <div className="filter-group" key="zona">
               <label htmlFor="zona">Zona:</label>
@@ -182,9 +244,9 @@ const FiltroDatosMapa = ({ isVisible, onClose, onFilter }) => {
           </div>
         </div>
         <div className="modal-footer">
-        <button className="btn" onClick={manejarMostrarTablaPromedio}>Consultar</button>
-          <button className="btn btn-secondary" onClick={manejarLimpiar}>Limpiar</button>
-        </div>
+        <button className="btn" onClick={actualizarDatosCasos}>Consultar</button>
+        <button className="btn btn-secondary" onClick={manejarLimpiar}>Limpiar</button>
+      </div>
 
         <div className="modal-footer">
           <button className="btn" onClick={() => manejarMostrarCasos('Casos de delitos')}>Casos de delitos</button>
@@ -195,51 +257,34 @@ const FiltroDatosMapa = ({ isVisible, onClose, onFilter }) => {
 
         {haSidoConsultado && (
           <div className="modal-table-container">
-
-        {mostrarTablaCasos && (
-
-              <div className="detenidos-table">
+            {mostrarTablaCasos && (
+              <div className="casos-table">
                 <table>
                   <thead>
                     <tr>
-                      <th rowSpan="2">Detenidos</th>
-                      <th colSpan="4">Última semana</th>
-                      <th colSpan="2">Último mes</th>
-                      <th colSpan="2">A la Fecha </th>
-                    </tr>
-                    <tr>
-                      {/* Sub-encabezados para 'Última semana' */}
-                      <th>2022</th>
+                      <th>Categoría</th>
+                      <th>Última semana</th>
                       <th>2023</th>
                       <th>Variación %</th>
-                      {/* Sub-encabezados para 'Último mes' y 'A la fecha actual' */}
-                      <th>2022</th>
-                      <th>2023</th>
-                      <th>Variación %</th>
-                      <th>2022</th>
-                      <th>2023</th>
-                      <th>Variación %</th>
+                      <th>Último mes</th>
+                  
                     </tr>
                   </thead>
-                  <tbody>
-                    {datosDetenidos.map((row, index) => (
-                      <tr key={index}>
-                        <td>{row.categoria}</td>
-                        <td>{row['2022_semana']}</td>
-                        <td>{row['2023_semana']}</td>
-                        <td>{row['variacion_semana']}</td>
-                        <td>{row['2022_mes']}</td>
-                        <td>{row['2023_mes']}</td>
-                        <td>{row['variacion_mes']}</td>
-                        <td>{row['2022_fecha']}</td>
-                        <td>{row['2023_fecha']}</td>
-                        <td>{row['variacion_fecha']}</td>
-                      </tr>
-                    ))}
-                  </tbody>
+                    <tbody>
+            {datosCasos.map((row, index) => (
+              <tr key={index}>
+                <td>{row.categoria}</td>
+                <td>{row['conteo_semana']}</td>
+                <td>{row['2023']}</td>
+                <td>{row['2023']}</td>
+
+                {/* ... otros datos de la fila ... */}
+              </tr>
+            ))}
+          </tbody>
                 </table>
               </div>
-              )}
+            )}
 
             {mostrarTablaPromedio && (
               <div className="average-table">

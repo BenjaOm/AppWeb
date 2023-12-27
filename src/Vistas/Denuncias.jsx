@@ -1,38 +1,53 @@
-import React from 'react';
-import styles from '../Assets/Denuncias.css'; // Import CSS module
+// DenunciasValidadas.jsx
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import styles from '../Assets/Denuncias.css';
 
-const Denuncias = () => {
-  // Sample data for the table
-  const denunciasData = [
-    { id: '001', usuario: 'Juan', tipoDelito: 'Robo', estado: 'Revisión', descripcion: 'Robo en tienda' },
-    { id: '002', usuario: 'Ana', tipoDelito: 'Vandalismo', estado: 'Aprobado', descripcion: 'Grafiti en escuela' },
-    { id: '003', usuario: 'Carlos', tipoDelito: 'Fraude', estado: 'Rechazado', descripcion: 'Fraude online' },
-    { id: '004', usuario: 'Luisa', tipoDelito: 'Hurtos', estado: 'No válido', descripcion: 'Hurtos menores' },
-    { id: '005', usuario: 'Sofía', tipoDelito: 'Daños', estado: 'Revisión', descripcion: 'Daños en parque' },
-    // ... more data
-  ];
+const DenunciasValidadas = () => {
+  const [denunciasValidadas, setDenunciasValidadas] = useState([]);
+
+  useEffect(() => {
+    const fetchDenuncias = async () => {
+      try {
+        const response = await axios.get('http://localhost:3002/api/denuncias-validadas');
+        setDenunciasValidadas(response.data);
+      } catch (error) {
+        console.error('Error al obtener las denuncias validadas', error);
+      }
+    };
+
+    fetchDenuncias();
+  }, []);
+
+  console.log(denunciasValidadas);
 
   return (
-    <div className="container">
-   <h1>Denuncias</h1>
-   <table className="denunciasTable">
+    <div className={styles.container}>
+      <h1>Denuncias Validadas</h1>
+      <table className="denunciasTable">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Tipo de Delito</th>
-            <th>Estado</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
             <th>Descripción</th>
+            <th>Tipo de Delito</th>
+            <th>Información Adicional</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Carabinero Asignado</th> {/* Agrega esta columna */}
           </tr>
         </thead>
         <tbody>
-          {denunciasData.map((denuncia, index) => (
+          {denunciasValidadas.map((denunciaValidada, index) => (
             <tr key={index}>
-              <td>{denuncia.id}</td>
-              <td>{denuncia.usuario}</td>
-              <td>{denuncia.tipoDelito}</td>
-              <td>{denuncia.estado}</td>
-              <td>{denuncia.descripcion}</td>
+              <td>{denunciaValidada.nombre}</td>
+              <td>{denunciaValidada.direccion}</td>
+              <td>{denunciaValidada.descripcion}</td>
+              <td>{denunciaValidada.tipoDelitoSeleccionado}</td>
+              <td>{denunciaValidada.infoAdicional}</td>
+              <td>{new Date(denunciaValidada.fecha).toLocaleString()}</td>
+              <td>{denunciaValidada.estado}</td>
+        <td>{denunciaValidada.carabineroAsignado ? denunciaValidada.carabineroAsignado.nombre : 'No asignado'}</td>
             </tr>
           ))}
         </tbody>
@@ -41,4 +56,4 @@ const Denuncias = () => {
   );
 };
 
-export default Denuncias;
+export default DenunciasValidadas;

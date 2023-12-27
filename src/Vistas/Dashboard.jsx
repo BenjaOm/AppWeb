@@ -1,162 +1,181 @@
-import React, { useState } from 'react';
-import { Bar, Line, Pie, Radar, Scatter } from 'react-chartjs-2';
+import {useState, useEffect} from 'react';
+import { Bar, Line } from 'react-chartjs-2';
 import 'chart.js/auto';
-import '../Assets/Dashboard.css'; // Importa el nuevo CSS
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../Assets/Dashboard.css'; // Make sure the path is correct
 import SideBarDashboard from '../Componentes/SideBarDashboard';
+import EstadisticasDashboard from './EstadisticasDashboard';
 
+// Data for the bar chart
 const dataBar = {
-  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+  labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
   datasets: [
     {
-      label: 'Denuncias',
-      data: [65, 59, 80, 81, 56, 55],
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      borderColor: 'rgba(255, 99, 132, 1)',
-      borderWidth: 1,
-    },
-    {
-      label: 'Detenciones',
-      data: [28, 48, 40, 19, 86, 27],
-      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-      borderColor: 'rgba(54, 162, 235, 1)',
+      label: 'Website Views',
+      data: [40, 20, 12, 39, 10, 40, 39],
+      backgroundColor: 'rgba(23, 125, 255, 0.7)',
+      borderColor: 'rgba(23, 125, 255, 1)',
       borderWidth: 1,
     },
   ],
 };
 
-const dataLine = {
-  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+// Data for the line charts
+const dataLineSales = {
+  labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   datasets: [
     {
-      label: 'Alertas Validadas',
-      data: [33, 25, 35, 51, 54, 76],
+      label: 'Daily Sales',
+      data: [400, 300, 200, 280, 350, 250, 400],
       fill: false,
-      borderColor: '#742774',
+      borderColor: 'rgba(40, 167, 69, 1)',
+      backgroundColor: 'rgba(40, 167, 69, 0.2)',
+      tension: 0.1,
+      pointRadius: 5,
     },
   ],
 };
 
-const dataPie = {
-  labels: ['Robo', 'Asalto', 'Fraude', 'Homicidio'],
+const dataLineTasks = {
+  ...dataLineSales,
   datasets: [
     {
-      data: [300, 50, 100, 40],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#EC932F'],
-      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#EC932F'],
+      ...dataLineSales.datasets[0],
+      borderColor: 'rgba(108, 117, 125, 1)',
+      backgroundColor: 'rgba(108, 117, 125, 0.2)',
     },
   ],
 };
 
-const dataRadar = {
-  labels: ['Comer', 'Beber', 'Dormir', 'Diseñar', 'Codificar', 'Ciclismo', 'Correr'],
-  datasets: [
-    {
-      label: 'My First Dataset',
-      data: [65, 59, 90, 81, 56, 55, 40],
-      fill: true,
-      backgroundColor: 'rgba(255, 99, 132, 0.2)',
-      borderColor: 'rgba(255, 99, 132, 1)',
-      pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(255, 99, 132, 1)',
-    },
-  ],
-};
-
-const dataScatter = {
-  datasets: [
-    {
-      label: 'Scatter Dataset',
-      data: Array.from({ length: 10 }, () => ({
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-      })),
-      backgroundColor: 'rgba(255, 99, 132, 1)',
-    },
-  ],
-};
-
-const optionsScatter = {
+// Chart options
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
   scales: {
-    x: {
-      type: 'linear',
-      position: 'bottom',
+    y: {
+      beginAtZero: true,
+    },
+  },
+  plugins: {
+    legend: {
+      display: false,
     },
   },
 };
 
-
-
 const Dashboard = () => {
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const [denuncias, setDenuncias] = useState([]);
+  const [totalDenunciasValidadas, setTotalDenunciasValidadas] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/api/denuncias');
+        if (!response.ok) {
+          throw new Error('Error al cargar las denuncias');
+        }
+        const data = await response.json();
+        setDenuncias(data);
+      } catch (error) {
+        console.error('Error al cargar las denuncias:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchTotalDenunciasValidadas = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/api/denunciaValidada/total');
+        if (!response.ok) {
+          throw new Error('Error al cargar el número total de denuncias validadas');
+        }
+        const data = await response.json();
+        setTotalDenunciasValidadas(data.total);
+      } catch (error) {
+        console.error('Error al cargar el número total de denuncias validadas:', error);
+      }
+    };
+
+    fetchTotalDenunciasValidadas();
+  }, []);
+
+     // Extrae las fechas y el total de denuncias
+  const fechas = denuncias.map((denuncia) => new Date(denuncia.fecha).toLocaleDateString());
+  const totalesDenuncias = Array.from({ length: fechas.length }, (_, i) =>
+    denuncias.slice(0, i + 1).length
+  );
+
+  const data = {
+    labels: fechas,
+    datasets: [
+      {
+        label: 'Total de Denuncias',
+        data: totalesDenuncias,
+        fill: false,
+        borderColor: 'rgba(40, 167, 69, 1)',
+        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+        tension: 0.1,
+        pointRadius: 5,
+      },
+    ],
   };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        stepSize: 1, // Esto asegurará que los valores sean números enteros
+      },
+    },
+  };
+
   return (
+    <div className="dashboard">
+          <SideBarDashboard/>
+          <EstadisticasDashboard/>
+          <div className="chart-card">
+          <Line data={data} options={options} />
 
-    
-    <div className={`dashboard ${isSidebarOpen ? 'sidebar-open' : ''}`}>
-    {/* Botón para abrir/cerrar el sidebar */}
-    <button onClick={toggleSidebar} className="sidebar-toggle">
-        ☰ {/* Ícono de menú */}
-      </button>
-
-      <SideBarDashboard isOpen={isSidebarOpen} onClose={toggleSidebar} />
-    <div className="charts-grid">
-      
-      {/* Gráfico de Barras */}
+        <Bar
+          data={{
+            labels: ['Denuncias Validadas'], // Etiqueta única para el número total de denuncias validadas
+            datasets: [
+              {
+                label: 'Total de Denuncias Validadas',
+                data: [totalDenunciasValidadas], // Datos con el número total
+                backgroundColor: 'rgba(23, 125, 255, 0.7)',
+                borderColor: 'rgba(23, 125, 255, 1)',
+                borderWidth: 1,
+              },
+            ],
+          }}
+          options={options}
+        />
+        <p className="chart-title">Estado de Denuncias</p>
+        <p className="chart-info">Last Campaign Performance</p>
+        <p className="chart-update">campaign sent 2 days ago</p>
+      </div>
       <div className="chart-card">
-
-        <h3>Comparativa de cantidad de denuncias</h3>
-        <div className="chart-container">
-          <Bar data={dataBar} />
-        </div>
+        <Line data={dataLineSales} options={options} />
+        <p className="chart-title">Daily Sales</p>
+        <p className="chart-info">(+15%) increase in today sales.</p>
+        <p className="chart-update">updated 4 min ago</p>
       </div>
-
-      {/* Gráfico de Líneas */}
       <div className="chart-card">
-        <h3>Tendencia Delictiva</h3>
-        <div className="chart-container">
-          <Line data={dataLine} />
-        </div>
+        <Line data={dataLineTasks} options={options} />
+        <p className="chart-title">Completed Tasks</p>
+        <p className="chart-info">Last Campaign Performance</p>
+        <p className="chart-update">just updated</p>
       </div>
-
-      {/* Gráfico Circular */}
-      <div className="chart-card">
-        <h3>Rango Etario más Afectado</h3>
-        <div className="chart-container">
-          <Pie data={dataPie} />
-        </div>
-      </div>
-
-      {/* Gráfico de Radar */}
-      <div className="chart-card">
-        <h3>Gráfico de Radar</h3>
-        <div className="chart-container">
-          <Radar data={dataRadar} />
-        </div>
-      </div>
-
-      {/* Gráfico de Dispersión */}
-      <div className="chart-card">
-        <h3>Gráfico de Dispersión</h3>
-        <div className="chart-container">
-          <Scatter data={dataScatter} options={optionsScatter} />
-        </div>
-      </div>
-
-        {/* Añade más tarjetas para otros gráficos */}
-      </div>
-
-     
     </div>
-    
   );
 };
 

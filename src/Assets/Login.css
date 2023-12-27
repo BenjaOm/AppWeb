@@ -1,0 +1,78 @@
+/* Estilos para el formulario de inicio de sesión */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.login-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-card h2 {
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.login-form label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.login-form .inputField {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+.login-form .checkboxGroup {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Aquí se aplica flexbox para centrar y alinear los botones */
+.login-form .button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-form .button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: darkgreen;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px; /* Espacio entre botones */
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.login-form .button:hover {
+  background-color: #006400; /* Color en hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Sombra en hover */
+  transform: scale(1.05); /* Efecto de escala en hover */
+}
+
+.login-form .error {
+  color: red;
+}

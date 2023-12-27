@@ -1,0 +1,84 @@
+.dashboard-stats {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px 0; /* Padding superior e inferior */
+  /* No padding izquierdo y derecho para alinear con el sidebar */
+  margin-right: 20px; /* Asegúrate de que el contenido no toque el borde derecho de la ventana */
+}
+  .stat-card {
+    width: calc(33.3333% - 20px); /* Ajusta para 3 elementos por fila */
+
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: calc(25% - 50px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px; /* Margen para separar las tarjetas */
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Adjusted for space distribution */
+    flex-direction: column; /* Stack icon and text */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 250px;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+  
+  .stat-icon {
+    /* Individual icon styles */
+    height: 60px;
+    width: 60px;
+    background-size: cover;
+    margin-bottom: 10px;
+  }
+  
+  /* Specific icons will need their own images */
+  .stat-icon.booking { background-image: url('../Assets/logoappweb.png'); }
+  .stat-icon.users { background-image: url('../Assets/logoappweb.png'); }
+  .stat-icon.revenue { background-image: url('../Assets/logoappweb.png'); }
+  .stat-icon.followers { background-image: url('../Assets/logoappweb.png'); }
+  
+  .stat-content h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #333;
+  }
+  
+  .stat-content p {
+    margin: 5px 0;
+    font-size: 1.5rem; /* Larger font size for numbers */
+  }
+  
+  .stat-diff {
+    color: #666;
+    font-size: 0.85rem;
+    align-self: flex-start; /* Align to the start of flex container */
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1200px) {
+    .dashboard-stats {
+      justify-content: center;
+    }
+  
+    .stat-card {
+      width: calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-stats {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .stat-card {
+      width: 80%;
+      margin: 10px 0;
+    }
+  }
+  

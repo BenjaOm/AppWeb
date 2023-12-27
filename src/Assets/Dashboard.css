@@ -1,67 +1,117 @@
-/* Dashboard.css */
-
+/* Estilos para los gráficos */
 .dashboard {
-    display: flex;
-    flex-direction: row;
-    transition: padding-left 0.3s ease;
-    padding-left: 0; /* No padding cuando el sidebar está cerrado */
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px 0; /* Padding superior e inferior */
+  /* No padding izquierdo y derecho para alinear con el sidebar */
+  margin-right: 20px; /* Asegúrate de que el contenido no toque el borde derecho de la ventana */
+  margin-left: 250px; /* Match the sidebar's width */
+  padding-top: 60px; /* Additional top padding to match the sidebar's offset */
+  /* ... other styles ... */
+}
+.dashboard-container {
+  margin-left: 250px; /* El ancho del sidebar */
+  margin-top: 60px; /* Desplaza hacia abajo para alinear con el sidebar */
+  padding: 20px;
+  width: calc(100% - 250px); /* Ajusta el ancho para que no se solape con el sidebar */
+  /* Otros estilos si son necesarios */
+}
+
+.chart-card {
+  flex-basis: calc(33.3333% - 20px); /* Adjust the basis for 3 cards per row */
+  background: #fff;
+  margin: 10px; /* Adjust margin as necessary */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden; /* Ensures the chart does not overflow the rounded corners */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.chart-container,
+.chart-card {
+  position: relative;
+  height: 300px;
+}
+
+.dashboard .chart-card:first-child {
+  margin-top: 0;
+}
+
+/* Añadir otros estilos de gráficos según sea necesario */
+
+/* Responsive styling */
+@media (max-width: 1200px) {
+  .dashboard-stats {
+    justify-content: center;
   }
 
-  .dashboard.sidebar-open {
-    padding-left: 250px; /* Añade el padding para compensar el ancho del sidebar */
-  }
-  
-  .sidebar-closed .dashboard {
-    padding-left: 0; /* Sin padding cuando el sidebar está cerrado */
-  }
-  
-  .charts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajuste automático de columnas */
-    gap: 20px;
-    width: 100%; /* Ajustar al contenedor */
-    transition: all 0.3s ease; /* Para animar los cambios de tamaño */
-  }
-  
   .chart-card {
-    background-color: #ffffff;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    flex-basis: calc(50% - 20px); /* Dos gráficos por fila */
   }
-  
-  .chart-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  .stat-card {
+    width: calc(50% - 20px); /* Dos estadísticas por fila */
   }
-  
-  .chart-card h3 {
-    color: #333;
-    margin-bottom: 15px;
-    font-size: 1.2em;
-  }
-  
-  .chart-container {
-    height: auto;
-    width: 100%;
+}
+
+@media (max-width: 768px) {
+  .dashboard-stats {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .sidebar-toggle {
-    position: fixed;
-    top: 50px;
-    left: 20px;
-    background-color: #333; /* Color de fondo del botón */
-    color: #fff; /* Color del texto del botón */
-    padding: 10px 15px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 999; /* Asegura que el botón esté en la parte superior de otros elementos */
+  .main-content {
+    margin-left: 0; /* El contenido principal debe ocupar todo el ancho de pantalla en dispositivos móviles */
   }
-  
-  /* Estilos para el ícono de toggle (puedes usar una fuente de íconos o una imagen) */
-  .sidebar-toggle i {
-    font-size: 20px;
+  .chart-card {
+    flex-basis: 100%; /* Un gráfico por fila */
   }
+  .stat-card {
+    width: 100%; /* Una estadística por fila */
+  }
+}
+
+.chart-container, .chart-card {
+  position: relative;
+  height: 300px;
+}
+
+.chart-title {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.chart-info {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.chart-update {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px); /* Raise the card up slightly */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2); /* Enhance the shadow */
+}
+
+/* Responsive styling */
+@media (max-width: 1200px) {
+  .chart-card {
+    flex-basis: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-card {
+    flex-basis: 100%;
+  }
+}
